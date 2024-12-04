@@ -1,63 +1,63 @@
 <template>
   <div
     class="call-screen d-flex flex-column justify-content-center align-items-center text-light"
-    style="height: 100vh"
   >
     <nav class="navbar">
       <div class="navbar-right">
         <i class="bi bi-info-circle"></i>
       </div>
     </nav>
-    
+
     <div class="text-center calling">
       <h6>calling mobile...</h6>
       <h1>{{ dialedNumber }}</h1>
     </div>
-    <div class="row text-center w-md-50 mb-3">
-      <div class="col p-1">
-        <button class="btn btn-dark rounded-circle p-2">
+
+    <div class="row text-center grid-state">
+      <div class="col p-1 grid-mantainace">
+        <button class="btn rounded-circle p-2 btn-div">
           <i class="fa-solid fa-volume-high"></i>
           <br />
-          <small>Speaker</small>
         </button>
+        <small>Speaker</small>
       </div>
-      <div class="col p-1">
-        <button class="btn btn-dark rounded-circle p-2">
+      <div class="col p-1 grid-mantainace">
+        <button class="btn rounded-circle p-2 btn-div">
           <i class="bi bi-camera-video"></i>
           <br />
-          <small>FaceTime</small>
         </button>
+        <small>FaceTime</small>
       </div>
-      <div class="col p-1">
-        <button class="btn btn-dark rounded-circle p-2">
+      <div class="col p-1 grid-mantainace">
+        <button class="btn rounded-circle p-2 btn-div">
           <i class="bi bi-mic-mute"></i>
           <br />
-          <small>Mute</small>
         </button>
+        <small>Mute</small>
       </div>
     </div>
-  
-    <div class="row text-center w-md-50 mb-2">
-      <div class="col p-1">
-        <button class="btn btn-dark rounded-circle p-2">
+
+    <div class="row text-center mb-5 grid-state">
+      <div class="col p-1 grid-mantainace">
+        <button class="btn rounded-circle p-2 btn-div">
           <i class="bi bi-plus-circle"></i>
           <br />
-          <small>Add</small>
         </button>
+        <small>Add</small>
       </div>
-      <div class="col p-1">
-        <button class="btn btn-danger rounded-circle p-3" @click="endCall">
+      <div class="col p-1 grid-mantainace">
+        <button class="btn rounded-circle p-3 btn-danger" @click="endCall">
           <i class="bi bi-telephone-x"></i>
           <br />
-          <small>End</small>
         </button>
+        <small>End</small>
       </div>
-      <div class="col p-1">
-        <button class="btn btn-dark rounded-circle p-2">
+      <div class="col p-1 grid-mantainace">
+        <button class="btn rounded-circle p-2 btn-div">
           <i class="bi bi-grid"></i>
           <br />
-          <small>Keypad</small>
         </button>
+        <small>Keypad</small>
       </div>
     </div>
   </div>
@@ -72,11 +72,22 @@ export default {
   },
   created() {
     this.dialedNumber = this.$route.query.number || "Unknown";
+    this.startCallTimeout();
   },
   methods: {
-    endCall() {
-      this.$router.push("/");
+    startCallTimeout() {
+      this.callTimeout = setTimeout(() => {
+        this.endCall();
+      }, 10000);
     },
+    endCall() {
+      clearTimeout(this.callTimeout);
+
+      this.$router.push("/recents");
+    },
+  },
+  beforeDestroy() {
+    clearTimeout(this.callTimeout);
   },
 };
 </script>
@@ -91,7 +102,15 @@ export default {
   font-size: 2rem;
 }
 .call-screen {
-  background-image: linear-gradient(to bottom, #9b9b9b, #898787, #8f8f8f, #727171, #3e3c3c);
+  height: 100vh;
+  background-image: linear-gradient(
+    to bottom,
+    #9b9b9b,
+    #898787,
+    #8f8f8f,
+    #727171,
+    #3e3c3c
+  );
 }
 button {
   width: 65px;
@@ -109,7 +128,7 @@ button small {
   color: lightgray;
 }
 .row .col {
-  padding-left: 0.25rem !important; 
+  padding-left: 0.25rem !important;
   padding-right: 0.25rem !important;
 }
 .row {
@@ -140,7 +159,10 @@ button small {
 .card:hover .card-int {
   background-position: 100% 100%;
 }
-
+.grid-state {
+  width: 30%;
+  /* margin-bottom: 5rem !important; */
+}
 .top {
   position: absolute;
   top: 0px;
@@ -164,7 +186,7 @@ button small {
   background-color: rgb(20, 20, 20);
 }
 .calling {
-  margin-bottom: 20rem;
+  margin-bottom: 22rem;
 }
 .camera {
   position: absolute;
@@ -258,5 +280,38 @@ button small {
 
 .card:hover .hello {
   transform: translateY(-20px);
+}
+.btn-div {
+  color: white;
+  background-color: grey;
+}
+.grid-mantainace {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .grid-state {
+    width: 40%;
+  }
+  .calling {
+    margin-bottom: 15rem;
+  }
+}
+@media (max-width: 550px) {
+  .grid-state {
+    width: 60%;
+  }
+}
+@media (max-width: 600px) {
+  .calling {
+    margin-bottom: 15rem;
+  }
+}
+@media (max-width: 400px) {
+  .grid-state {
+    width: 70%;
+  }
 }
 </style>

@@ -1,163 +1,161 @@
 <template>
   <div class="main">
-    <div class="card">
+    <!-- <div class="card">
       <div class="btn1"></div>
       <div class="btn2"></div>
       <div class="btn3"></div>
       <div class="btn4"></div>
       <div class="card-int"></div>
-      <div class="top"></div>
+      <div class="top"></div> -->
 
-      <div class="recents-container">
-        <nav class="navbar">
-          <div
-            class="container d-flex justify-content-between align-items-center"
-          >
-            <div class="navbar-left d-flex align-items-center">
-              <span class="time me-2">8:06</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
+    <div class="recents-container">
+      <nav class="navbar">
+        <div
+          class="container d-flex justify-content-between align-items-center"
+        >
+          <div class="navbar-left d-flex align-items-center">
+            <span class="time me-2">8:06</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="white"
+              transform="rotate(50)"
+            >
+              <path
+                d="M12 2L15 18L12 15L9 18L12 2Z"
+                stroke="white"
+                stroke-width="1.5"
                 fill="white"
-                transform="rotate(50)"
-              >
-                <path
-                  d="M12 2L15 18L12 15L9 18L12 2Z"
-                  stroke="white"
-                  stroke-width="1.5"
-                  fill="white"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <div class="navbar-right d-flex align-items-center">
-              <i class="bi bi-wifi me-2"></i>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="25"
-                height="25"
-                viewBox="0 0 22 15"
-              >
-                <rect
-                  x="3.5"
-                  y="2"
-                  width="15"
-                  height="9"
-                  rx="2"
-                  ry="2"
-                  fill="#808080"
-                />
-                <rect
-                  x="3.5"
-                  y="2"
-                  width="3"
-                  height="9"
-                  rx="2"
-                  ry="2"
-                  fill="red"
-                />
-                <rect
-                  x="19"
-                  y="5"
-                  width="1"
-                  height="3"
-                  rx="1"
-                  ry="1"
-                  fill="#808080"
-                />
-                <text
-                  x="11"
-                  y="7"
-                  text-anchor="middle"
-                  fill="white"
-                  font-size="8"
-                  font-family="Arial"
-                  dy=".3em"
-                >
-                  18
-                </text>
-              </svg>
-            </div>
+                stroke-linejoin="round"
+              />
+            </svg>
           </div>
-        </nav>
-        <div class="tabs d-flex align-items-center">
-          <span><a href="#" style="text-decoration: none">Edit</a></span>
-          <div class="switchtabs">
-            <button
-              :class="{ active: activeTab === 'all' }"
-              @click="activeTab = 'all'"
+
+          <div class="navbar-right d-flex align-items-center">
+            <p class="dots">...</p>
+            <i class="bi bi-wifi me-2"></i>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              viewBox="0 0 22 15"
             >
-              All
-            </button>
-            <button
-              :class="{ active: activeTab === 'missed' }"
-              @click="activeTab = 'missed'"
-            >
-              Missed
-            </button>
+              <rect
+                x="3.5"
+                y="2"
+                width="15"
+                height="9"
+                rx="2"
+                ry="2"
+                fill="#808080"
+              />
+              <rect
+                x="3.5"
+                y="2"
+                width="3"
+                height="9"
+                rx="2"
+                ry="2"
+                fill="red"
+              />
+              <rect
+                x="19"
+                y="5"
+                width="1"
+                height="3"
+                rx="1"
+                ry="1"
+                fill="#808080"
+              />
+              <text
+                x="11"
+                y="7"
+                text-anchor="middle"
+                fill="white"
+                font-size="8"
+                font-family="Arial"
+                dy=".3em"
+              >
+                18
+              </text>
+            </svg>
           </div>
         </div>
-        <header class="recents-header">
-          <h2>Recents</h2>
-        </header>
-
-        <div class="recents-list-container">
-          <ul class="recents-list">
-            <li
-              v-for="call in filteredCalls.slice(0, 10)"
-              :key="call.id"
-              class="recents-item"
-            >
-              <div class="call-info">
-                <span class="call-name">{{ call.name }}</span>
-                <span class="call-type">{{
-                  call.type === "video" ? "Video Call" : "Voice Call"
-                }}</span>
-              </div>
-              <div class="call-meta">
-                <span class="call-time">{{ call.time }}</span>
-                <button class="delete-btn" @click="deleteCall(call.id)">
-                  <i class="bi bi-trash-fill"></i>
-                </button>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="bottom-navbar d-flex">
-          <ul
-            class="d-flex justify-content-between"
-            style="
-              height: 22px;
-              align-items: center;
-              padding: 1px;
-              margin-top: 2rem;
-              padding-bottom: 2rem;
-            "
+      </nav>
+      <div class="tabs d-flex align-items-center">
+        <span
+          ><a href="#" style="text-decoration: none; margin-left: 1rem"
+            >Edit</a
+          ></span
+        >
+        <div class="switchtabs">
+          <button
+            class="all"
+            :class="{ active: activeTab === 'all' }"
+            @click="activeTab = 'all'"
           >
-            <li>
-              <a href="#"><i class="bi bi-star"></i><br />Favourites</a>
-            </li>
-            <li :class="{ active: $route.name === 'recents' }">
-              <a href="#" @click.prevent="goToRecents"
-                ><i class="bi bi-clock"></i><br />Recents</a
-              >
-            </li>
-            <li>
-              <a href="#"><i class="bi bi-person"></i><br />Contacts</a>
-            </li>
-            <li>
-              <a href="#" @click="gotodialpad"
-                ><i class="bi bi-grid"></i><br />Keypad</a
-              >
-            </li>
-          </ul>
+            All
+          </button>
+          <button
+            class="missed"
+            :class="{ active: activeTab === 'missed' }"
+            @click="activeTab = 'missed'"
+          >
+            Missed
+          </button>
         </div>
       </div>
+      <header class="recents-header">
+        <h2>Recents</h2>
+      </header>
+
+      <div class="recents-list-container">
+        <ul class="recents-list">
+          <li
+            v-for="call in filteredCalls.slice(0, 10)"
+            :key="call.id"
+            class="recents-item"
+          >
+            <div class="call-info">
+              <span class="call-name">{{ call.name }}</span>
+              <span class="call-type">{{
+                call.type === "video" ? "Video Call" : "Voice Call"
+              }}</span>
+            </div>
+            <div class="call-meta">
+              <span class="call-time">{{ call.time }}</span>
+              <button class="delete-btn" @click="deleteCall(call.id)">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bottom-navbar d-flex">
+        <ul class="d-flex justify-content-between">
+          <li>
+            <a href="#"><i class="bi bi-star"></i><br />Favourites</a>
+          </li>
+          <li :class="{ active: $route.name === 'recents' }">
+            <a href="#" @click.prevent="goToRecents"
+              ><i class="bi bi-clock"></i><br />Recents</a
+            >
+          </li>
+          <li>
+            <a href="#"><i class="bi bi-person"></i><br />Contacts</a>
+          </li>
+          <li>
+            <a href="#" @click="gotodialpad"
+              ><i class="bi bi-grid"></i><br />Keypad</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
+    <!-- </div>÷/ -->
   </div>
 </template>
 
@@ -167,22 +165,24 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      activeTab: "all", 
+      activeTab: "missed",
     };
   },
   computed: {
-    ...mapGetters(["getCallLogs", "getMissedCalls"]), 
+    ...mapGetters(["getCallLogs", "getMissedCalls"]),
     filteredCalls() {
-      return this.activeTab === "all" ? this.getCallLogs : this.getMissedCalls;
+      return this.activeTab === "missed"
+        ? this.getCallLogs
+        : this.getMissedCalls;
     },
   },
   methods: {
-    ...mapActions(["deleteCallLog", "loadCallLogs"]), 
+    ...mapActions(["deleteCallLog", "loadCallLogs"]),
     deleteCall(id) {
-      this.deleteCallLog(id); 
+      this.deleteCallLog(id);
     },
     gotodialpad() {
-      this.$router.push("/"); 
+      this.$router.push("/");
     },
   },
   mounted() {
@@ -190,7 +190,7 @@ export default {
   },
   watch: {
     callLogs: {
-      handler(logs) {
+      testCallLogs(logs) {
         localStorage.setItem("callLogs", JSON.stringify(logs));
       },
       deep: true,
@@ -204,9 +204,12 @@ export default {
   background-color: black;
   color: white;
   height: 100%;
-  padding: 10px;
 }
 .main {
+  width: 430px;
+  height: 100vh;
+  padding: 0 17px;
+  margin: 0 auto;
   background-color: black;
 }
 .recents-header {
@@ -215,10 +218,19 @@ export default {
   align-items: center;
   padding: 10px 0;
 }
-
+.all {
+  width: 60px;
+}
+.call-name {
+  color: #d02727;
+}
+.missed {
+  width: 67px;
+}
 .tabs button {
+  height: 2rem;
   flex: 1;
-  padding: 10px;
+  /* padding: 10px; */
   border: none;
   font-size: 16px;
   background: none;
@@ -229,18 +241,23 @@ export default {
 
 .tabs button.active {
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
   /* border-bottom: 2px solid #1e90ff; */
   background-color: #7e7b7b;
   border-radius: 10px;
+  font-size: 16px;
 }
 .switchtabs {
-  margin-left: 4rem;
+  margin-left: 7rem;
   background-color: #343030;
   border-radius: 10px;
-  width: 7rem;
+  width: 8rem;
+  height: 2rem;
 }
-
+.dots {
+  margin: 0;
+  color: #575151;
+}
 .recents-list {
   list-style: none;
   padding: 0;
@@ -276,7 +293,7 @@ export default {
 }
 
 .call-type {
-  color: #1e90ff;
+  /* color: #1e90ff; */
   font-size: 14px;
   margin-top: 5px;
 }
@@ -289,7 +306,7 @@ export default {
 }
 
 .card {
-  width: 25%;
+  width: 30%;
   height: 45rem;
   background: black;
   border-radius: 35px;
@@ -358,13 +375,11 @@ export default {
   background-color: rgba(0, 0, 255, 0.212);
 }
 
-/* Scrollable container styling */
 .recents-list-container {
-  max-height: 20rem; /* Set max-height for scrollable container */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 20rem;
+  overflow-y: auto;
 }
 
-/* Customize scrollbar to resemble Opera's style */
 .recents-list-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -448,8 +463,16 @@ export default {
 .bottom-navbar li {
   list-style: none;
   text-align: center;
-  margin-right: 2.5rem;
+  margin-right: 3.5rem;
   font-size: 10px;
+}
+.bottom-navbar ul {
+  height: 22px;
+  align-items: center;
+  padding: 1px;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+  margin-left: 23px;
 }
 .bottom-navbar li.active a {
   color: #007bff;
@@ -474,42 +497,62 @@ export default {
     width: 50%;
   }
   .bottom-navbar li {
-    margin-right: 5.5rem;
+    margin-right: 3.5rem;
   }
   .switchtabs {
-    margin-left: 9rem;
+    margin-left: 6.5rem;
+  }
+  .bottom-navbar ul {
+    margin-left: 20px;
   }
 }
 @media (max-width: 768px) {
   .switchtabs {
     margin-left: 6rem;
   }
+  .card {
+    width: 84%;
+  }
   .bottom-navbar li {
-    margin-right: 3.5rem;
+    margin-right: 2.5rem;
+  }
+  .bottom-navbar ul {
+    margin-left: 3rem;
+  }
+}
+@media (max-width: 650px) {
+  .bottom-navbar ul {
+    margin-left: 2rem;
   }
 }
 @media (max-width: 425px) {
   .bottom-navbar li {
-    margin-right: 2.5rem;
+    margin-right: 1.75rem;
   }
-  .card {
+  .main {
     width: 80%;
   }
   .switchtabs {
-    margin-left: 4rem;
+    margin-left: 6.5rem;
   }
 }
 @media (max-width: 375px) {
   .bottom-navbar li {
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
   .switchtabs {
     margin-left: 3rem;
   }
-}
-@media (max-width: 320px) {
+  .bottom-navbar ul {
+    margin-left: 23px;
+  }
   .card {
     width: 90%;
+  }
+}
+@media (max-width: 338px) {
+  .bottom-navbar ul {
+    margin-left: 0;
   }
 }
 </style>

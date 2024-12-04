@@ -19,5 +19,9 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: black !important;
+  
+}
+#app{
+  height:100%
 }
 </style>

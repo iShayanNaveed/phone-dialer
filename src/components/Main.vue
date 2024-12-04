@@ -1,8 +1,18 @@
 <template>
   <div class="main">
     <div
-      class="container text-center text-light p-4 main"
-      style="max-width: 400px; background-color: black"
+      class="container text-center text-light main"
+      style="
+        max-width: 400px;
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+        max-height: 100vh;
+        box-sizing: border-box;
+        padding: 10px;
+      "
     >
       <nav class="navbar">
         <div
@@ -28,6 +38,7 @@
             </svg>
           </div>
           <div class="navbar-right d-flex align-items-center">
+            <p class="dots">...</p>
             <i class="bi bi-wifi me-2"></i>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -77,93 +88,95 @@
           </div>
         </div>
       </nav>
-      <div class="display-area mb-3">
-        <h1 class="text-light">{{ dialedNumber || " " }}</h1>
-        <small class="text-primary" role="button" @click="addNumber"
-          >Add Number</small
-        >
-      </div>
-      <div class="row">
-        <div v-for="(number, index) in numbers" :key="index" class="col-4 mb-3">
-          <button
-            class="btn btn-dark rounded-circle text-light"
-            @click="appendNumber(number)"
-            :style="{
-              height: '75px',
-              lineHeight: '1.6',
-              fontSize: '18px',
-              width: '75px',
-            }"
+      <div>
+        <div class="display-area d-flex flex-column align-items-center">
+          <input type="text" v-model="dialedNumber" class="number" />
+          <small class="text-primary" role="button" @click="addNumber"
+            >Add Number</small
           >
-            <span>{{ number.label }}</span>
-            <small v-if="number.subLabel" class="d-block">{{
-              number.subLabel
-            }}</small>
-          </button>
         </div>
-      </div>
+        <div class="row">
+          <div
+            v-for="(number, index) in numbers"
+            :key="index"
+            class="col-4 mb-2"
+          >
+            <button
+              class="btn btn-dark rounded-circle text-light"
+              @click="appendNumber(number)"
+              :style="{
+                height: '75px',
+                lineHeight: '1.6',
+                fontSize: '18px',
+                width: '75px',
+              }"
+            >
+              <span>{{ number.label }}</span>
+              <small v-if="number.subLabel" class="d-block">{{
+                number.subLabel
+              }}</small>
+            </button>
+          </div>
+        </div>
 
-      <div class="row mt-3 justify-content-center align-items-center">
-        <div class="col-auto text-center call">
-          <button
-            class="button btn btn-success"
-            :disabled="!dialedNumber"
-            @click="makeCall"
-            style="height: 75px; width: 75px"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              viewBox="0 0 32 32"
-              height="32"
-              fill="none"
-              class="svg-icon"
+        <div class="row mt-2 justify-content-center align-items-center">
+          <div class="col-auto text-center call">
+            <button
+              class="button btn btn-success"
+              :disabled="!dialedNumber"
+              @click="makeCall"
+              style="height: 75px; width: 75px"
             >
-              <path
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke="#fff"
-                fill-rule="evenodd"
-                d="m24.8868 19.1288c-1.0274-.1308-2.036-.3815-3.0052-.7467-.7878-.29-1.6724-.1034-2.276.48-.797.8075-2.0493.9936-2.9664.3258-1.4484-1.055-2.7233-2.3295-3.7783-3.7776-.6681-.9168-.4819-2.1691.3255-2.9659.5728-.6019.7584-1.4748.4802-2.2577-.3987-.98875-.6792-2.02109-.8358-3.07557-.2043-1.03534-1.1138-1.7807-2.1694-1.77778h-3.18289c-.60654-.00074-1.18614.25037-1.60035.69334-.40152.44503-.59539 1.03943-.53345 1.63555.344 3.31056 1.47164 6.49166 3.28961 9.27986 1.64878 2.5904 3.84608 4.7872 6.43688 6.4356 2.7927 1.797 5.9636 2.9227 9.2644 3.289h.1778c.5409.0036 1.0626-.2 1.4581-.569.444-.406.6957-.9806.6935-1.5822v-3.1821c.0429-1.0763-.7171-2.0185-1.7782-2.2046z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="col-auto text-center">
-          <button
-            class="btn delete-button"
-            :disabled="!dialedNumber"
-            @click="deleteLastDigit"
-          >
-            <i class="bi bi-backspace"></i>
-          </button>
-        </div>
-      </div>
-      <div class="bottom-navbar d-flex">
-        <ul
-          class="d-flex justify-content-between"
-          style="padding-bottom: 3rem; margin-top: 2rem; margin-left: 2rem"
-        >
-          <li>
-            <a href="#"><i class="bi bi-star"></i><br />Favourites</a>
-          </li>
-          <li :class="{ active: $route.name === 'recents' }">
-            <a href="#" @click.prevent="goToRecents"
-              ><i class="bi bi-clock"></i><br />Recents</a
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                viewBox="0 0 32 32"
+                height="32"
+                fill="none"
+                class="svg-icon"
+              >
+                <path
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke="#fff"
+                  fill-rule="evenodd"
+                  d="m24.8868 19.1288c-1.0274-.1308-2.036-.3815-3.0052-.7467-.7878-.29-1.6724-.1034-2.276.48-.797.8075-2.0493.9936-2.9664.3258-1.4484-1.055-2.7233-2.3295-3.7783-3.7776-.6681-.9168-.4819-2.1691.3255-2.9659.5728-.6019.7584-1.4748.4802-2.2577-.3987-.98875-.6792-2.02109-.8358-3.07557-.2043-1.03534-1.1138-1.7807-2.1694-1.77778h-3.18289c-.60654-.00074-1.18614.25037-1.60035.69334-.40152.44503-.59539 1.03943-.53345 1.63555.344 3.31056 1.47164 6.49166 3.28961 9.27986 1.64878 2.5904 3.84608 4.7872 6.43688 6.4356 2.7927 1.797 5.9636 2.9227 9.2644 3.289h.1778c.5409.0036 1.0626-.2 1.4581-.569.444-.406.6957-.9806.6935-1.5822v-3.1821c.0429-1.0763-.7171-2.0185-1.7782-2.2046z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div class="col-auto text-center">
+            <button
+              class="btn delete-button"
+              :disabled="!dialedNumber"
+              @click="deleteLastDigit"
             >
-          </li>
-          <li>
-            <a href="#"><i class="bi bi-person"></i><br />Contacts</a>
-          </li>
-          <li :class="{ active: $route.name === 'home' }">
-            <a href="#"><i class="bi bi-grid"></i><br />Keypad</a>
-          </li>
-        </ul>
+              <i class="bi bi-backspace"></i>
+            </button>
+          </div>
+        </div>
+        <div class="bottom-navbar d-flex">
+          <ul class="d-flex justify-content-between">
+            <li>
+              <a href="#"><i class="bi bi-star"></i><br />Favourites</a>
+            </li>
+            <li :class="{ active: $route.name === 'recents' }">
+              <a href="#" @click.prevent="goToRecents"
+                ><i class="bi bi-clock"></i><br />Recents</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="bi bi-person"></i><br />Contacts</a>
+            </li>
+            <li :class="{ active: $route.name === 'home' }">
+              <a href="#"><i class="bi bi-grid"></i><br />Keypad</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 <script>
 import { mapActions } from "vuex";
@@ -184,14 +197,14 @@ export default {
         { label: "0", subLabel: "+" },
         { label: "#", subLabel: "" },
       ],
-      dialedNumber: "", 
+      dialedNumber: "",
     };
   },
   methods: {
     appendNumber(number) {
       this.dialedNumber += number.label;
     },
-    ...mapActions([ "addCallLog"]),
+    ...mapActions(["addCallLog"]),
     makeCall() {
       if (this.dialedNumber) {
         const now = new Date();
@@ -201,8 +214,9 @@ export default {
           time: now.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
+            hour12: true,
           }),
-          type: "all", 
+          type: "all",
         };
 
         this.addCallLog(callData);
@@ -245,7 +259,10 @@ body {
 .display-area small {
   cursor: pointer;
 }
-/* From Uiverse.io by andrew-demchenk0 */
+.dots {
+  margin: 0;
+  color: #575151;
+}
 .button {
   display: flex;
   justify-content: center;
@@ -279,9 +296,18 @@ body {
 .call-button:focus {
   outline: none;
 }
-
+.number {
+  text-align: center;
+  color: white;
+  background: black;
+  border: none;
+  font-size: 35px;
+  font-weight: bold;
+}
+.number:focus {
+  outline: none !important;
+}
 .delete-button {
-  /* background-color: #dc3545; */
   border: none;
   border-radius: 50%;
   width: 50px;
@@ -298,7 +324,7 @@ body {
 }
 
 .row {
-  margin-top: 20px;
+  margin-top: 10px;
   justify-content: space-between;
   align-items: center;
 }
@@ -350,19 +376,10 @@ body {
   border-radius: 2px;
   background-color: rgb(20, 20, 20);
 }
-.navbar {
-  /* padding: 0.5rem 1rem; */
-  margin-bottom: 4rem;
-}
 
 .navbar-left .time {
   font-size: 1.2rem;
   color: white;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
 }
 
 .battery-icon {
@@ -370,16 +387,16 @@ body {
 }
 
 .battery-icon i {
-  font-size: 1.75rem; 
+  font-size: 1.75rem;
 }
 
 .battery-percentage {
   font-size: 0.7rem;
-  color: rgb(182, 163, 163); 
+  color: rgb(182, 163, 163);
   top: 55%;
   left: 76%;
   transform: translate(-50%, -50%);
-  pointer-events: none; 
+  pointer-events: none;
 }
 .camera {
   position: absolute;
@@ -477,7 +494,7 @@ body {
 .bottom-navbar li {
   list-style: none;
   text-align: center;
-  margin-right: 3.5rem;
+  margin-right: 4.5rem;
   font-size: 10px;
 }
 
@@ -495,6 +512,10 @@ body {
   font-size: 20px;
   margin-bottom: 5px;
 }
+.bottom-navbar ul {
+  /* margin-top: 3rem; */
+  margin-left: 2rem;
+}
 
 @media (max-width: 375px) {
   .call {
@@ -503,6 +524,9 @@ body {
   }
   .bottom-navbar li {
     margin-right: 2.5rem;
+  }
+  .bottom-navbar ul {
+    margin-left: 0;
   }
 }
 </style>

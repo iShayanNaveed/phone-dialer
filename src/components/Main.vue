@@ -180,6 +180,8 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   data() {
     return {
@@ -209,7 +211,7 @@ export default {
       if (this.dialedNumber) {
         const now = new Date();
         const callData = {
-          id: Date.now(),
+          id: uuidv4(),
           name: this.dialedNumber,
           time: now.toLocaleTimeString([], {
             hour: "2-digit",

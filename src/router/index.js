@@ -1,9 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import Callscreen from "@/components/CallScreen.vue"
-import Recents from "@/components/Recents.vue";
-
+import RecentView from "@/views/RecentView.vue";
+import CallView from "@/views/CallView.vue";
 // import { component } from "vue/types/umd";
 
 Vue.use(VueRouter);
@@ -17,12 +16,13 @@ const routes = [
   {
     path: "/callscreen",
     name: "callscreen",
-    component: Callscreen,
-  },{
-    path:"/recents",
-    name:"recents",
-    component : Recents
-  }
+    component: CallView,
+  },
+  {
+    path: "/recents",
+    name: "recents",
+    component: RecentView,
+  },
 ];
 
 const router = new VueRouter({

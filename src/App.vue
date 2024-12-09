@@ -4,13 +4,7 @@
   </div>
 </template>
 <script>
-// import HomeView from "./views/HomeView.vue";
-
-export default {
-  // components: {
-  //   HomeView,
-  // },
-};
+export default {};
 </script>
 
 <style>
@@ -19,9 +13,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: black !important;
-  
 }
-#app{
-  height:100%
+#app {
+  height: 100%;
 }
 </style>

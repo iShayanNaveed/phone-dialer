@@ -1,22 +1,21 @@
 <template>
   <div class="home">
-    <Main />
+    <DialerApp />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Main from "@/components/Main.vue";
-
+import DialerApp from "@/components/DialerApp.vue";
 export default {
   name: "HomeView",
   components: {
-    Main,
+    DialerApp,
   },
 };
 </script>
 <style scoped>
-.home {
+/* .home {
   background-color: black;
-}
+} */
 </style>

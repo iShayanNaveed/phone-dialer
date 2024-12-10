@@ -101,11 +101,8 @@ export default {
         };
 
         this.addCallLog(callData);
-        this.$router.push({
-          name: "callscreen",
-          query: { number: this.dialedNumber },
-        });
 
+        this.$emit("start-call", this.dialedNumber);
         this.dialedNumber = "";
       }
     },

@@ -80,13 +80,14 @@
 
 <script>
 export default {
-  data() {
-    return {
-      dialedNumber: "",
-    };
+  props: {
+    dialedNumber: {
+      type: String,
+      required: true,
+    },
   },
+
   created() {
-    this.dialedNumber = this.$route.query.number || "Unknown";
     this.startCallTimeout();
   },
   methods: {
@@ -97,7 +98,7 @@ export default {
     },
     endCall() {
       clearTimeout(this.callTimeout);
-
+      this.$emit("end-call");
       this.$router.push("/recents");
     },
   },

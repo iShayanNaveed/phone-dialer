@@ -10,7 +10,7 @@
 
     <div class="text-center calling">
       <h6 class="mb-2">calling mobile...</h6>
-      <h1>{{ dialedNumber }}</h1>
+      <h1>{{ callData.name }}</h1>
     </div>
 
     <div class="row text-center grid-state">
@@ -59,6 +59,7 @@
         <button
           class="btn rounded-circle p-3 btn-danger end-call"
           @click="endCall"
+          :disabled="isEndButtonDisabled"
         >
           <i class="bi bi-telephone-x"></i>
           <br />
@@ -79,27 +80,43 @@
 </template>
 
 <script>
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/Firebase/firebase";
 export default {
   props: {
-    dialedNumber: {
-      type: String,
-      required: true,
+    callData: {
+      type: Object,
     },
+  },
+  data() {
+    return {
+      isEndButtonDisabled: false,
+    };
   },
 
   created() {
     this.startCallTimeout();
   },
+
   methods: {
     startCallTimeout() {
       this.callTimeout = setTimeout(() => {
         this.endCall();
       }, 10000);
     },
-    endCall() {
+    async endCall() {
+      if (this.isEndButtonDisabled) return;
+
+      this.isEndButtonDisabled = true;
       clearTimeout(this.callTimeout);
-      this.$emit("end-call");
-      this.$router.push("/recents");
+      try {
+        await setDoc(doc(db, "call-log", this.callData.id), this.callData);
+        console.log("Call log saved successfully!");
+        this.$emit("end-call");
+        this.$router.push("/recents");
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   beforeDestroy() {

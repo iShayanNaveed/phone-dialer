@@ -1,11 +1,7 @@
 <template>
   <div class="home">
-    <DialerApp v-if="!isCalling" @start-call="handleStartCall" />
-    <CallScreen
-      v-else
-      :dialedNumber="currentNumber"
-      @end-call="handleEndCall"
-    />
+    <DialerApp v-if="!isCallActive" @start-call="handleStartCall" />
+    <CallScreen v-else :callData="activeCallData" @end-call="handleEndCall" />
   </div>
 </template>
 
@@ -21,18 +17,18 @@ export default {
   },
   data() {
     return {
-      isCalling: false,
-      currentNumber: "",
+      isCallActive: false,
+      activeCallData: null,
     };
   },
   methods: {
-    handleStartCall(number) {
-      this.isCalling = true;
-      this.currentNumber = number;
+    handleStartCall(callData) {
+      this.isCallActive = true;
+      this.activeCallData = callData;
     },
     handleEndCall() {
-      this.isCalling = false;
-      this.currentNumber = "";
+      this.isCallActive = false;
+      this.activeCallData = null;
     },
   },
 };

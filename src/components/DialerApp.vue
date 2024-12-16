@@ -4,6 +4,7 @@
       <NavBar />
       <div class="display-area d-flex flex-column align-items-center">
         <input
+          readonly
           type="text"
           v-model="dialedNumber"
           class="number-field text-center text-white border-0 fw-bold bg-black"
@@ -85,8 +86,7 @@ export default {
     appendNumber(number) {
       this.dialedNumber += number.label;
     },
-    ...mapActions(["addCallLog"]),
-    makeCall() {
+    async makeCall() {
       if (this.dialedNumber) {
         const now = new Date();
         const callData = {
@@ -100,9 +100,8 @@ export default {
           type: "all",
         };
 
-        this.addCallLog(callData);
+        this.$emit("start-call", callData);
 
-        this.$emit("start-call", this.dialedNumber);
         this.dialedNumber = "";
       }
     },

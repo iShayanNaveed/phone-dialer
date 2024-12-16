@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="recents-container text-white p-2">
-      <NavBar class="navbar mb-4" />
+      <NavBar class="navbar mb-2" />
       <div class="tabs d-flex align-items-center">
         <span><a href="#" class="text-decoration-none ms-4">Edit</a></span>
         <div class="switchtabs">
@@ -20,12 +20,19 @@
             Missed
           </button>
         </div>
+        <div class="sort-dropdown ms-4">
+          <select v-model="selectedSortOrder" @change="onSortOrderChange">
+            <option value="" disabled>Sort</option>
+            <option value="desc">Oldest</option>
+            <option value="asc">Newest</option>
+          </select>
+        </div>
       </div>
-      <header class="recents-header py-2">
+      <header class="recents-header pt-2">
         <h2>Recents</h2>
       </header>
-
-      <div class="recents-list-container">
+      <loaderComponent v-if="isLoading" />
+      <div class="recents-list-container" v-if="!isLoading">
         <ul class="recents-list p-0">
           <li
             v-for="call in filteredCalls.slice(0, 10)"
@@ -49,8 +56,10 @@
             </div>
           </li>
         </ul>
+        <div v-show="!isLoading && filteredCalls.length > 0 && hasMoreLogs">
+          <button class="load-more-btn" @click="loadMoreLogs">Load More</button>
+        </div>
       </div>
-
       <TaskBar class="taskbar" />
     </div>
   </div>
@@ -60,41 +69,58 @@
 import { mapGetters, mapActions } from "vuex";
 import NavBar from "./NavBar.vue";
 import TaskBar from "./TaskBar.vue";
+import loaderComponent from "@/components/loaderComponent.vue";
 export default {
   components: {
     NavBar,
     TaskBar,
+    loaderComponent,
   },
   data() {
     return {
       activeTab: "all",
+      selectedSortOrder: "",
     };
   },
+
   computed: {
-    ...mapGetters(["getCallLogs", "getMissedCalls"]),
+    ...mapGetters([
+      "getCallLogs",
+      "getMissedCalls",
+      "isLoading",
+      "sortOrder",
+      "getLastVisible",
+    ]),
     filteredCalls() {
       return this.activeTab === "all" ? this.getCallLogs : this.getMissedCalls;
     },
+    hasMoreLogs() {
+      return this.getLastVisible !== null;
+    },
+    currentSortOrder() {
+      return this.sortOrder;
+    },
   },
   methods: {
-    ...mapActions(["deleteCallLog", "loadCallLogs"]),
+    ...mapActions([
+      "deleteCallLog",
+      "loadLogsFromFirestore",
+      "loadMoreLogs",
+      "updateSortOrder",
+    ]),
     deleteCall(id) {
       this.deleteCallLog(id);
     },
     gotodialpad() {
       this.$router.push("/");
     },
+    onSortOrderChange(event) {
+      const sortOrder = event.target.value;
+      this.updateSortOrder(sortOrder);
+    },
   },
   mounted() {
-    this.loadCallLogs();
-  },
-  watch: {
-    calllogs: {
-      testCallLogs(logs) {
-        localStorage.setItem("callLogs", JSON.stringify(logs));
-      },
-      deep: true,
-    },
+    this.loadLogsFromFirestore();
   },
 };
 </script>
@@ -104,6 +130,32 @@ export default {
   width: 430px;
   height: 100vh;
   margin: 0 auto;
+}
+.load-more-btn {
+  display: block;
+  margin: auto;
+  margin-top: 7rem;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.load-more-btn:hover {
+  background-color: #0056b3;
+}
+.sort-dropdown select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #343030;
+  color: white;
+  cursor: pointer;
+}
+
+.sort-dropdown select:focus {
+  outline: none;
 }
 
 .all {
@@ -151,7 +203,7 @@ export default {
 }
 
 .recents-list-container {
-  height: 23.75rem;
+  height: 25rem;
   overflow-y: auto;
 }
 
